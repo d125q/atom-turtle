@@ -1,9 +1,10 @@
 {
   "name": "atom-turtle",
   "main": "./lib/main",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Turtle support for Atom.",
-  "license": "MIT",
+  "license": "GPLv3",
+  "repository": "https://github.com/d125q/atom-turtle",
   "keywords": [ "turtle", "postscript" ],
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
