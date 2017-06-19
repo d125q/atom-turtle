@@ -3,7 +3,7 @@
   "main": "./lib/main",
   "version": "0.0.0",
   "description": "Turtle support for Atom.",
-  "license": "GPLv3",
+  "license": "MIT",
   "repository": "https://github.com/d125q/atom-turtle",
   "keywords": [ "turtle", "postscript" ],
   "engines": {
