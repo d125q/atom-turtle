@@ -1,0 +1,102 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+@font-face {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  src: url(atom://atom-turtle/fonts/fontawesome-webfont.woff2);
+}
+
+.fa {
+  font-family: 'FontAwesome';
+}
+
+.atom-turtle-parser-message {
+  margin-right: 3px;
+}
+
+#atom-turtle-status-bar {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+#atom-turtle-status-bar .inline-block {
+  margin-right: 5px;
+}
+
+.atom-turtle-control-icon {
+  font-size: 18px !important;
+  margin: 4px 10px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.atom-turtle-control-separator, #atom-turtle-root-text {
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-left: 5px;
+  margin-right: 3px;
+}
+
+#atom-turtle-root-text {
+  margin-left: -4px;
+}
+
+#atom-turtle-panel-resizer {
+  height: 10px;
+  cursor: s-resize;
+  position: absolute;
+  width: 100%;
+}
+
+#atom-turtle-logs {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  max-height: 120px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.atom-turtle-log-message {
+  font-size: 14px;
+}
+
+.atom-turtle-log-clickable {
+  cursor: pointer;
+}
+
+.atom-turtle-log-icon {
+  font-size: 14px !important;
+  margin: 4px 6px;
+  display: inline-block;
+}
+
+.atom-turtle-dimmed {
+  opacity: 0.3;
+}
+
+.atom-turtle-log-icon.fa-times-circle, #atom-turtle-status-bar-icon.fa-times-circle {
+  color: red;
+}
+
+.atom-turtle-log-icon.fa-exclamation-circle, #atom-turtle-status-bar-icon.fa-exclamation-circle, #atom-turtle-status-bar-icon.fa-cog {
+  color: orange;
+}
+
+.atom-turtle-log-icon.fa-question-circle, #atom-turtle-status-bar-icon.fa-question-circle {
+  color: cyan;
+}
+
+#atom-turtle-status-bar-icon.atom-turtle-latexmk-skipped {
+  color: orange;
+}
+
+#atom-turtle-status-bar-icon.fa-check-circle {
+  color: green;
+}

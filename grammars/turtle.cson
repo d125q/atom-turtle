@@ -1,0 +1,432 @@
+'scopeName': 'source.turtle'
+'fileTypes': [ 'turtle' ]
+'name': 'Turtle'
+'patterns': [
+  {
+    'include': '#comments'
+  }
+  {
+    'match': '\\b(fn|returns|if|else|for|while)\\b'
+    'name': 'keyword.turtleontrol.turtle'
+  }
+  {
+    'include': '#storage_types'
+  }
+  {
+    'match': '\\b(True|False)\\b'
+    'name': 'constant.language.turtle'
+  }
+  {
+    'include': '#operators'
+  }
+  {
+    'include': '#numbers'
+  }
+  {
+    'include': '#strings'
+  }
+  {
+    'include': '#block'
+  }
+  {
+    'include': '#parens'
+  }
+  {
+    # FIRST CAPTURE meta.function.turtle scope
+    # (provides an injectable scope, balanced parentheses and
+    #  prevents unnecessary scope nesting)
+    'begin': '''(?x)
+      (?!(?:if|else|while|for|returns)\\s*\\()
+      (?=
+        (?:[A-Za-z_][A-Za-z0-9_]*+)++\\s*\\(
+      )
+    '''
+    'end': '(?<=\\))(?!\\w)'
+    'name': 'meta.function.turtle'
+    'patterns': [
+      {
+        'include': '#function-innards'
+      }
+    ]
+  }
+  {
+    'include': '#line_continuation_character'
+  }
+  {
+    'match': ';'
+    'name': 'punctuation.terminator.statement.turtle'
+  }
+  {
+    'match': ','
+    'name': 'punctuation.separator.delimiter.turtle'
+  }
+]
+'repository':
+  'comments':
+    'patterns': [
+      {
+        'captures':
+          '1':
+            'name': 'meta.toc-list.banner.block.turtle'
+        'match': '^/\\* =(\\s*.*?)\\s*= \\*/$\\n?'
+        'name': 'comment.block.turtle'
+      }
+      {
+        'begin': '/\\*'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.comment.begin.turtle'
+        'end': '\\*/'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.comment.end.turtle'
+        'name': 'comment.block.turtle'
+      }
+      {
+        'match': '\\*/.*\\n'
+        'name': 'invalid.illegal.stray-comment-end.turtle'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'meta.toc-list.banner.line.turtle'
+        'match': '^// =(\\s*.*?)\\s*=\\s*$\\n?'
+        'name': 'comment.line.banner.turtle'
+      }
+      {
+        'begin': '(^[ \\t]+)?(?=//)'
+        'beginCaptures':
+          '1':
+            'name': 'punctuation.whitespace.comment.leading.turtle'
+        'end': '(?!\\G)'
+        'patterns': [
+          {
+            'begin': '//'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.comment.turtle'
+            'end': '(?=\\n)'
+            'name': 'comment.line.double-slash.turtle'
+            'patterns': [
+              {
+                'include': '#line_continuation_character'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+    'block_innards':
+      'patterns': [
+        {
+          'include': '#function_call'
+        }
+        {
+          'captures':
+            '1':
+              'name': 'variable.other.turtle'
+            '2':
+              'name': 'punctuation.definition.parameters.turtle'
+          'match': '''(?x)
+            (?:
+              (?:
+                (?=\\s)(?<!else|new|return)
+                (?<=\\w) \\s+  # or word + space before name
+              )
+            )
+            (
+              (?:[A-Za-z_][A-Za-z0-9_]*+)++
+              |
+              (?:(?<=operator) (?:[-*&<>=+!]+ | \\(\\) | .turtle'\\]))
+            )
+            \\s*(\\() # opening bracket
+          '''
+          'name': 'meta.initialization.turtle'
+        }
+        {
+          # Prevent unnecessary nesting of meta.block.c scope
+          'begin': '{'
+          'beginCaptures':
+            '0':
+              'name': 'punctuation.section.block.begin.bracket.curly.turtle'
+          'end': '}|(?=\\s*#\\s*(?:elif|else|endif)\\b)'
+          'endCaptures':
+            '0':
+              'name': 'punctuation.section.block.end.bracket.curly.turtle'
+          'patterns': [
+            {
+              'include': '#block_innards'
+            }
+          ]
+        }
+        {
+          'include': '#parens-block'
+        }
+        {
+          'include': '$base'
+        }
+    ]
+  'function_call':
+    # FIRST CAPTURE meta.function-call.c scope (provides an injectable scope,
+    # balanced parentheses and prevents unnecessary scope nesting)
+    'begin': '''(?x)
+      (?!(?:if|else|while|for|returns)\\s*\\()
+      (?=
+      (?:[A-Za-z_][A-Za-z0-9_]*+)++\\s*\\(
+      )
+    '''
+    'end': '(?<=\\))(?!\\w)'
+    'name': 'meta.function-call.turtle'
+    'patterns': [
+      {
+        'include': '#function-call-innards'
+      }
+    ]
+  'line_continuation_character':
+    'patterns': [
+      {
+        'match': '(\\\\)\\n'
+        'captures':
+          '1':
+            'name': 'constant.character.escape.line-continuation.turtle'
+      }
+    ]
+  'numbers':
+    'patterns': [
+      {
+        'match': '\\b(0(x|X)[0-9a-fA-F]+)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?\\b'
+        'name': 'constant.numeric.turtle'
+      }
+    ]
+  'parens':
+    'begin': '\\('
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.parens.begin.bracket.round.turtle'
+    'end': '\\)'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.parens.end.bracket.round.turtle'
+    'patterns': [
+      {
+        'include': '$base'
+      }
+    ]
+  'parens-block':
+    'begin': '\\('
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.parens.begin.bracket.round.turtle'
+    'end': '\\)'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.parens.end.bracket.round.turtle'
+    'patterns': [
+      {
+        'include': '#block_innards'
+      }
+    ]
+  'operators':
+    'patterns': [
+      {
+        'match': '--'
+        'name': 'keyword.operator.decrement.turtle'
+      }
+      {
+        'match': '\\+\\+'
+        'name': 'keyword.operator.increment.turtle'
+      }
+      {
+        'match': '%=|\\+=|-=|\\*=|(?<!\\()/='
+        'name': 'keyword.operator.assignment.compound.turtle'
+      }
+      {
+        'match': '!=|<=|>=|==|<|>'
+        'name': 'keyword.operator.comparison.turtle'
+      }
+      {
+        'match': '&&|!|\\|\\|'
+        'name': 'keyword.operator.logical.turtle'
+      }
+      {
+        'match': '='
+        'name': 'keyword.operator.assignment.turtle'
+      }
+      {
+        'match': '%|\\*|/|-|\\+'
+        'name': 'keyword.operator.turtle'
+      }
+    ]
+  'strings':
+    'patterns': [
+      {
+        'begin': '"'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.turtle'
+        'end': '"'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.turtle'
+        'name': 'string.quoted.double.turtle'
+        'patterns': [
+          {
+            'include': '#string_escaped_char'
+          }
+          {
+            'include': '#line_continuation_character'
+          }
+        ]
+      }
+      {
+        'begin': '\''
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.turtle'
+        'end': '\''
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.turtle'
+        'name': 'string.quoted.single.turtle'
+        'patterns': [
+          {
+            'include': '#string_escaped_char'
+          }
+          {
+            'include': '#line_continuation_character'
+          }
+        ]
+      }
+    ]
+  'string_escaped_char':
+    'patterns': [
+      {
+        'match': '''(?x)\\\\ (
+            \\\\             |
+            [abefnprtv'"?]   |
+            [0-3]\\d{,2}     |
+            [4-7]\\d?        |
+            x[a-fA-F0-9]{,2} |
+            u[a-fA-F0-9]{,4} |
+            U[a-fA-F0-9]{,8} )
+        '''
+        'name': 'constant.character.escape.turtle'
+      }
+      {
+        'match': '\\\\.'
+        'name': 'invalid.illegal.unknown-escape.turtle'
+      }
+    ]
+  'storage_types':
+    'patterns': [
+      {
+        'match': '\\b(int|real|bool|str)\\b'
+        'name': 'storage.type.turtle'
+      }
+    ]
+  'function-innards':
+    'patterns': [
+      {
+        'include': '#comments'
+      }
+      {
+        'include': '#storage_types'
+      }
+      {
+        'include': '#operators'
+      }
+      {
+        'begin': '''(?x)
+          (?!(?:if|else|while|for|returns)\\s*\\()
+          (
+          (?:[A-Za-z_][A-Za-z0-9_]*+)++
+          )
+          \\s*(\\()
+        '''
+        'beginCaptures':
+          '1':
+            'name': 'entity.name.function.turtle'
+          '2':
+            'name': 'punctuation.section.parameters.begin.bracket.round.turtle'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.parameters.end.bracket.round.turtle'
+        'patterns': [
+          {
+            'include': '#function-innards'
+          }
+        ]
+      }
+      {
+        'begin': '\\('
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.parens.begin.bracket.round.turtle'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.parens.end.bracket.round.turtle'
+        'patterns': [
+          {
+            'include': '#function-innards'
+          }
+        ]
+      }
+      {
+        'include': '$base'
+      }
+    ]
+  'function-call-innards':
+    'patterns': [
+      {
+        'include': '#comments'
+      }
+      {
+        'include': '#storage_types'
+      }
+      {
+        'include': '#operators'
+      }
+      {
+        'begin': '''(?x)
+          (?!(?:if|else|while|for|returns)\\s*\\()
+          (
+          (?:[A-Za-z_][A-Za-z0-9_]*+)++
+          )
+          \\s*(\\()
+        '''
+        'beginCaptures':
+          '1':
+            'name': 'entity.name.function.turtle'
+          '2':
+            'name': 'punctuation.section.arguments.begin.bracket.round.turtle'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.arguments.end.bracket.round.turtle'
+        'patterns': [
+          {
+            'include': '#function-call-innards'
+          }
+        ]
+      }
+      {
+        'begin': '\\('
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.parens.begin.bracket.round.turtle'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.parens.end.bracket.round.turtle'
+        'patterns': [
+          {
+            'include': '#function-call-innards'
+          }
+        ]
+      }
+      {
+        'include': '#block_innards'
+      }
+    ]

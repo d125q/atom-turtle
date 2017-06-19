@@ -1,0 +1,6 @@
+'atom-text-editor[data-grammar="source turtle"]':
+  'ctrl-l ctrl-b': 'atom-turtle:build'
+  'ctrl-l ctrl-c': 'atom-turtle:clean'
+  'ctrl-l ctrl-p': 'atom-turtle:preview'
+  'ctrl-l ctrl-k': 'atom-turtle:kill'
+  'ctrl-l ctrl-l': 'atom-turtle:toggle-panel'
